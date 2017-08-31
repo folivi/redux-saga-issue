@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StatusBar } from 'react-native'
+import { View, StatusBar, Text } from 'react-native'
 import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
@@ -14,11 +14,14 @@ class RootContainer extends Component {
     if (!ReduxPersist.active) {
       this.props.startup()
     }
+
+    console.log("this.props.user", this.props);
   }
 
   render () {
     return (
       <View style={styles.applicationView}>
+        <Text>{JSON.stringify(this.props.user)}</Text>
         <StatusBar barStyle='light-content' />
         <ReduxNavigation />
       </View>
@@ -31,4 +34,11 @@ const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup())
 })
 
-export default connect(null, mapDispatchToProps)(RootContainer)
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userData
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

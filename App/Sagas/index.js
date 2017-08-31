@@ -5,13 +5,15 @@ import DebugConfig from '../Config/DebugConfig'
 
 /* ------------- Types ------------- */
 
-import { StartupTypes } from '../Redux/StartupRedux'
-import { GithubTypes } from '../Redux/GithubRedux'
+import { StartupTypes } from '../Redux/StartupRedux';
+import { LocalUserTypes } from '../Redux/LocalUserRedux';
+
 
 /* ------------- Sagas ------------- */
 
-import { startup } from './StartupSagas'
-import { getUserAvatar } from './GithubSagas'
+import { startup } from './StartupSagas';
+import { getLocalUser } from './LocalUserSagas';
+
 
 /* ------------- API ------------- */
 
@@ -25,8 +27,7 @@ export default function * root () {
   yield [
     // some sagas only receive an action
     takeLatest(StartupTypes.STARTUP, startup),
+    takeLatest(LocalUserTypes.LOAD_NOW, getLocalUser)
 
-    // some sagas receive extra parameters in addition to an action
-    takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api)
   ]
 }
